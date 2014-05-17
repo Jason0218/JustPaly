@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.CarMapper">
+	<insert id="insertCar" parameterType="Car">
+		insert into t_car("id",carid,cardriver,deadweight,volume,state)
+			values (T_CAR_SEQUENCE.nextval,#{carId},#{carDriver},#{deadweight},#{volume},#{state})
+	</insert>
+
+	<select id="selectById" parameterType="String" resultType="Car">
+		select * from t_car where carId = #{carId}
+	</select>
+	
+	<select id="selectByCarId" parameterType="int" resultType="Car">
+		select * from t_car where "id" = #{id}
+	</select>
+	
+	<select id="selectByCond" parameterType="map" resultType="Car">
+	select t2.* from
+		(select rownum r,t1.* from t_car t1 where 1=1
+			<if test="carId!=null and carId!=''"> 
+				and carid like '%${carId}%' 
+			</if>
+			<if test="deadweight!=null">
+				and deadweight &gt; #{deadweight}
+			</if>
+			<if test="volume!=null">
+				and volume &gt; #{volume}
+			</if>
+			<if test="state!=null and state!=''">
+				and state = #{state}
+			</if>
+			and rownum&lt;=${end}) t2
+	where t2.r&gt;=${start}
+	</select>
+	
+	<select id="getTotalRecord" parameterType="map" resultType="Car">
+		select * from t_car where 1=1
+			<if test="carId!=null and carId!=''"> 
+				and carid like '%${carId}%' 
+			</if>
+			<if test="deadweight!=null">
+				and deadweight &gt; #{deadweight}
+			</if>
+			<if test="volume!=null">
+				and volume &gt; #{volume}
+			</if>
+			<if test="state!=null and state!=''">
+				and state = #{state}
+			</if>
+	</select>
+
+	<update id="updateCar" parameterType="Car">
+		update t_car
+			set 
+				carid = #{carId},
+				cardriver=#{carDriver},
+				deadweight=#{deadweight},
+				volume=#{volume},
+				state=#{state}
+			where "id"=#{id}
+	</update>
+	
+	<delete id="deleteCar" parameterType="int">
+		delete from t_car where "id"=#{id}
+	</delete>
+	
+	<select id="selectByState" parameterType="Car" resultType="Car">
+		select * from t_car where 1=1
+			<if test="state!=null and state!=''">
+				and state = #{state}
+			</if>
+	</select>
+</mapper>

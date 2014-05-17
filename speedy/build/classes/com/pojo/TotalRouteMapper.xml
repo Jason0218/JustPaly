@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.TotalRouteMapper">
+
+<resultMap id="TotalResult" type="TotalRoute">
+<id property="id" column="totalroute_id"/>
+<result property="routenum" column="totalroute_routenum"/>
+<result property="route_id"  column="totalroute_route_id"/>
+<result property="startnode" column="totalroute_startnode"/>
+<result property="acrossnoade" column="totalroute_acrossnoade"/>
+<result property="endpoint" column="totalroute_endpoint"/>
+<association property="route" column="totalroute_route_id" javaType="Route"
+resultMap="Route"/>
+</resultMap>
+
+<resultMap id="Route" type="Route">
+<id property="id" column="route_id" />
+<result property="routename" column="route_name"/>
+<result property="routefrom" column="route_routefrom"></result>
+<result property="routeto"  column="route_routeto"></result>
+</resultMap>
+<select id="selectTotalRouteByRoute"  resultMap="TotalResult">   
+   select
+  A."id" as totalroute_id,
+  A.routenum as totalroute_routenum,
+  A.startnode as totalroute_startnode,
+  A.acrossnoade as totalroute_acrossnoade,
+  A.endpoint as totalroute_endpoint, 
+  B."id" as route_id,
+  B.routename as route_name
+  from t_totalrouteform A left join  t_route B on A.route_id = B."id"
+</select>
+
+<select id="selectTotalRouteById"  parameterType="int"  resultMap="TotalResult">   
+   select
+  A."id" as totalroute_id,
+  A.routenum as totalroute_routenum,
+  A.startnode as totalroute_startnode,
+  A.acrossnoade as totalroute_acrossnoade,
+  A.endpoint as totalroute_endpoint, 
+  B."id" as route_id,
+  B.routename as route_name
+  from t_totalrouteform A left join  t_route B on A.route_id = B."id"
+  where  A."id" = #{id}
+</select>
+
+<select id="selectTotalRouteByNum"  parameterType="String"  resultMap="TotalResult">   
+   select
+  A."id" as totalroute_id,
+  A.routenum as totalroute_routenum,
+  A.startnode as totalroute_startnode,
+  A.acrossnoade as totalroute_acrossnoade,
+  A.endpoint as totalroute_endpoint, 
+  B."id" as route_id,
+  B.routename as route_name
+  from t_totalrouteform A left join  t_route B on A.route_id = B."id"
+  where  A.routenum = #{routenum}
+</select>
+
+<select id="selectTotalRouteByName"  parameterType="String"  resultMap="TotalResult">   
+  select
+  A."id" as totalroute_id,
+  A.routenum as totalroute_routenum,
+  A.startnode as totalroute_startnode,
+  A.acrossnoade as totalroute_acrossnoade,
+  A.endpoint as totalroute_endpoint, 
+  B."id" as route_id,
+  B.routename as route_name
+  from t_totalrouteform A left join  t_route B on A.route_id = B."id"
+  where  B.routename = #{routename}
+</select>
+<insert id="insertTotalRoute" parameterType="TotalRoute">
+  insert into t_totalrouteform values(t_totalrouteform_sequence.nextval,#{routenum},#{route_id},#{startnode},#{acrossnoade},#{endpoint})
+</insert>
+
+<delete id="deleteTotalRoute">
+	delete from t_totalrouteform where "id" = #{id}
+</delete>
+
+<update id="updateTotalRoute" parameterType="TotalRoute">
+update t_totalrouteform set  acrossnoade=#{acrossnoade}
+where "id" = #{id}
+</update>
+
+</mapper>

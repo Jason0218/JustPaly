@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+  		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+ 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	
+
+	<!-- mybatis配置 -->
+	<bean id="allocateAction" class="com.action.AllocateBeanAction" scope="prototype">
+	     <property name="allocateBeanService" ref="allocateBeanService"></property>
+	     <property name="carService" ref="carService"></property>
+	     <property name="alloCarService" ref="alloCarService"></property>
+	     <property name="timeService" ref="timeService"></property>
+	     <property name="goodsStateService" ref="goodsStateService"></property>
+	     <property name="sendNodeService" ref="sendNodeService"></property>
+	</bean>
+	<bean id="sendNodeService" class="com.service.impl.SendNodeServiceImpl">
+	     <property name="snd" ref="snd"></property>
+	</bean>
+	
+	<bean id="goodsStateService" class="com.service.impl.GoodsStateServiceImpl">
+	     <property name="goodsStateDao" ref="goodsStateDao"></property>
+	      <property name="sendNodeDao" ref="snd"></property>
+	</bean>
+	<bean id="goodsStateDao" class="com.dao.impl.GoodsStateDaoImpl">
+	     <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="timeService" class="com.service.impl.SetOutTimeServiceImpl">
+	     <property name="timeDao" ref="timeDao"></property>
+	</bean>
+	<bean id="timeDao" class="com.dao.impl.SetOutTimeDaoImpl">
+	     <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="alloCarService" class="com.service.impl.AllocateCarServiceImpl">
+	     <property name="allocateCarDao" ref="allocateCarDao"></property>
+	</bean>
+	<bean id="allocateCarDao" class="com.dao.impl.AllocateCarDaoImpl">
+	     <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="allocateBeanService" class="com.service.impl.AllocateBeanServiceImpl">
+	     <property name="allocateBeanDao" ref="allocateBeanDao"></property>
+	</bean>
+	<bean id="allocateBeanDao" class="com.dao.impl.AllocateBeanDaoImpl">
+	     <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+ </beans>

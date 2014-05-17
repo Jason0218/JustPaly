@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+ 		http://www.springframework.org/schema/aop 
+ 		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	
+
+
+
+	<!-- 这个地方开始放置所有bean的配置信息 -->
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+		<property name="locations" value="WEB-INF/db.properties" />
+</bean>
+	<!-- 读取jdbc.properties文件，配置数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${driver}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${user}" />
+		<property name="password" value="${password}" />
+		<!-- 数据库连接池配置 -->
+		<property name="initialSize" value="60" /><!-- 初始化连接数量 -->
+		<property name="maxIdle" value="50" /><!-- 最大空闲连接数量 -->
+		<property name="minIdle" value="10" /><!-- 最小空闲连接数量 -->
+	</bean>
+
+	<!-- AOP配置事务 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<aop:config>
+		<aop:pointcut id="serviceMethod"
+			expression="execution(* com.service.*Service.*(..))" />
+		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" />
+	</aop:config>
+
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="false" />
+			<tx:method name="insert*" rollback-for="Exception" />
+			<tx:method name="update*" />
+			<tx:method name="delete*" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+
+
+
+
+	<!-- mybatis配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="WEB-INF/SqlMapConfig.xml" />
+		
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	
+	
+
+
+	
+	
+
+	<!-- 车辆模块的spring配置 -->
+
+	<import resource="../SpringContext/spring-car.xml"></import>
+	<import resource="../SpringContext/spring-sendNode.xml"></import>
+	<import resource="../SpringContext/spring-role.xml"></import>
+	<import resource="../SpringContext/spring-user.xml"></import>
+	<import resource="../SpringContext/spring-allocate.xml"></import>
+	<import resource="../SpringContext/spring-order.xml"></import>
+	<import resource="../SpringContext/spring-route.xml"></import>
+	<import resource="../SpringContext/spring-totalroute.xml"></import>
+	<import resource="../SpringContext/spring-permission.xml"></import>
+	<import resource="../SpringContext/spring-report.xml"></import>
+	<import resource="../SpringContext/spring-associateList.xml"></import>
+</beans>
+
+

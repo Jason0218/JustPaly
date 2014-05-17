@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+	<!-- Add packages here -->
+	<package name="user" namespace="/user" extends="struts-default">
+    	
+		<!-- <action name="codeIm"  class="codeAction">
+					<result name="success">/admin/login.jsp</result>
+			</action> -->
+		<!--插入 -->
+		<action name="insertUser" method="insertUser" class="userAction">
+			<result name="success" type="redirectAction">user/showUser</result>
+		</action>
+		<!--根据用户名查询 -->
+		<action name="selectByUsername" class="userAction" method="selectByUsername">
+			<result name="success">/user/updateUser.jsp</result>
+		</action>
+		<!-- 更新-->
+		<action name="updateUser" class="userAction" method="updateUser">
+			<result name="success" type="redirectAction">user/showUser</result>
+		</action>
+		<!-- 判断用户是否存在-->
+		<action name="validateUserName" class="userAction" method="validateUserName">
+			<result name="success">/</result>
+		</action>
+		<!-- 查询所有用户信息-->
+		<action name="showUser" class="userAction" method="showUser">
+			<result name="success">/user/selectuser.jsp</result>
+		</action>
+		<!-- 组合条件查询-->
+		<action name="selectUserByCondition" class="userAction" method="showUser">
+			<result name="success">/user/selectuser.jsp</result>
+		</action>
+		<!-- 登陆-->
+		<action name="login" class="userAction">
+			<result name="success">/admin/index.jsp</result>
+			<result name="error">/admin/login.jsp</result>
+		</action>
+		<!--更新状态 -->
+		<action name="updateState" class="userAction" method="updateState"> 
+			<result name="success" type="redirect">/user/showUser</result>
+		</action>
+		<!--退出 -->
+		<action name="logout" class="userAction" method="logout">
+			<result name="success">/admin/login.jsp</result>
+		</action>
+		<!--根据id删除 -->
+		<action name="deleteById" class="userAction" method="deleteUser">
+			<result name="success" type="redirectAction">user/showUser?curpage=${curpage}</result>
+		</action>
+		<!-- 群删-->
+		<action name="deleteByIds" class="userAction" method="deleteUserByIds">
+			<result name="success" type="redirectAction">user/showUser?curpage=${curpage}</result>
+			<result name="fail" type="redirectAction">user/showUser?msg=${msg}</result>
+		</action>
+	<!-- 加密解密 -->
+    <action name="cpabeAction_*" class="cpAction" method="{1}">
+    <result name="success">/quanxian/show.jsp</result>
+    </action>
+
+	</package>
+</struts>

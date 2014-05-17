@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+	<!-- Add packages here <package name="order" namespace="/order" extends="struts-default"> 
+		<action name="q" method="query" class="com.action.OrderAction"> <result name="success">/success.jsp</result> 
+		</action> </package> -->
+	<package name="permission" namespace="/" extends="struts-default">
+    
+    
+     <action name="getAllPermission" method="getAllPermission" class="permissionAction">
+        <result name="success">../quanxian/insert_role.jsp</result>
+    </action>
+    
+    <action name="showPms" method="getAllPermission" class="permissionAction">
+        <result name="success">../quanxian/pmsTable.jsp</result>
+    </action>
+    
+     <action name="validatePmsName" method="validatePmsName" class="permissionAction">
+        <result name="success">/</result>
+    </action>
+    
+     <action name="insertPms" method="insertPms" class="permissionAction">
+        <result name="success" type="redirect">/quanxian/showPms</result>
+    </action>
+    
+    <action name="deleteByPid" method="deleteByPid" class="permissionAction">
+        <result name="success" type="redirect">/quanxian/showPms</result>
+         <result name="error" type="redirect">/quanxian/showPms?msg=${msg}</result>
+    </action>
+    
+    <action name="deleteManyPms" method="deleteManyPms" class="permissionAction">
+        <result name="success" type="redirect">/quanxian/showPms</result>
+         <result name="error" type="redirect">/quanxian/showPms?msg=${msg}</result>
+    </action>
+    
+    <action name="showPmsDetails" method="showPmsDetails" class="permissionAction">
+        <result name="success">../quanxian/update_pms.jsp</result>
+    </action>
+    
+     <action name="updatePms" method="updatePms" class="permissionAction">
+        <result name="success" type="redirect">/quanxian/showPms</result>
+    </action>
+    
+    </package>
+
+</struts>

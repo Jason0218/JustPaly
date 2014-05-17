@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.UserMapper">
+
+
+	<!-- 根据id查询 -->
+	<select id="selectByUserId" parameterType="int" resultType="User">
+select * from t_user where "id" = #{id}
+	</select>
+
+	<!--插入  -->
+
+	<insert id="insert" parameterType="User">
+insert into T_User ("id",username,"password",sex,age,tel,address,email,rid,node_id,state )
+values (t_user_sequence.nextval,#{username},#{password},#{sex},#{age},#{tel},#{address},#{email},#{rid},#{node_id},0)
+	</insert>
+	<!-- 根据用户名查询 -->
+	<select id="selectByUsername" parameterType="String" resultType="User">
+		select * from t_user where username = #{username}
+	</select>
+	
+	<!-- 更新状态 -->
+	<update id="updateState" parameterType="User">
+		update t_user set state = #{state} where "id" = #{id}
+	</update>
+	<!-- 组合查询 -->
+	<select id="selectByCondition" parameterType="map" resultType="User">
+		select t2.* from
+	      (select rownum r,t1.* from t_user t1 where 1=1
+		<if test="username!=null and username!=''">
+				and username like '%${username}%' 
+		</if>
+		<if test="sex!=null and sex!=''">
+				and sex = #{sex}
+		</if>
+		<if test="age!=null and age!=''">
+				and age = #{age}
+		</if>
+		<if test="address!=null and address!=''">
+				and address like '%${address}%'
+		</if>
+			and rownum&lt;=${end}) t2
+	where t2.r&gt;=${start}
+	</select>
+	
+	
+	<select id="getTotalRec" parameterType="map" resultType="User">
+		select * from t_user where 1=1
+		<if test="username!=null and username!=''">
+				and username like '%${username}%' 
+		</if>
+		<if test="sex!=null and sex!=''">
+				and sex = #{sex}
+		</if>
+		<if test="age!=null and age!=''">
+				and age = #{age}
+		</if>
+		<if test="address!=null and address!=''" >
+				and address like '%${address}%'
+		</if>
+	</select>
+	<!-- 更新 -->
+	<update id="updateUser" parameterType="User">  
+        update T_USER set  
+        username=#{username},sex=#{sex},age=#{age},tel=#{tel},address=#{address},email=#{email},rid=#{rid},node_id=#{node_id}where  
+        "id"=#{id}  
+	</update> 
+	<!-- 删除 -->
+	<delete id="deleteUser" parameterType="int">
+		delete from t_user where "id"=#{id}
+	</delete>
+
+</mapper>

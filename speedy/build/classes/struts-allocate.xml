@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+    <!-- Add packages here -->
+    <package name="allocate" namespace="/allocate" extends="struts-default">
+    	<action name="showAllocate" class="allocateAction" method="showAllocate">
+    		<result name="suc">/car/allocate_car.jsp</result>
+    	</action>
+    	
+    	<action name="validate" class="allocateAction" method="validate">
+    		<result name="suc">/</result>
+    	</action>
+    	
+    	<action name="allocateCar" class="allocateAction" method="allocateCar">
+    		<result name="suc" type="redirectAction">car/showAllocate?msg=${msg}</result>
+    	</action>
+    </package>
+
+</struts>

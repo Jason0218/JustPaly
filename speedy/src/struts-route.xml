@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+    <!-- Add packages here -->
+    <package name="route" namespace="/" extends="struts-default">
+    <!--<action name="RouteAction_query" method="query" class="com.action.RouteAction">
+        <result name="success">/route/showRoute.jsp</result>
+    </action>
+  -->
+    <action name="RouteAction_query" method="showRoute" class="com.action.RouteAction">
+        <result name="success">/route/showRoute.jsp</result>
+    </action>
+     <action name="RouteAction_insert" method="insertRoute" class="com.action.RouteAction">
+        <result name="success" type="redirectAction">/RouteAction_query</result>
+    </action>
+    
+    <action name="RouteAction_queryAllRoutename" method="query" class="com.action.RouteAction">
+        <result name="success">/route/addTotalRoute.jsp</result>
+    </action>
+    <action name="RouteAction_delete" method="deleteRoute" class="com.action.RouteAction">
+        <result name="success" type="redirectAction">/RouteAction_query</result>
+    </action>
+     <action name="RouteAction_update" method="updateRoute" class="com.action.RouteAction">
+    	<result name="success" type="redirectAction">/RouteAction_query</result> 
+    </action>
+    
+    <action name="TotalRouteAction_query"  method="queryTotalRoute"  class="com.action.RouteAction">
+          <result name="success" type="redirectAction">/route/showTotalRoute</result> 
+    </action>
+    
+    <action name="RouteAction_checkName"  method="checkRoute"  class="com.action.RouteAction">
+          <result name="success">/</result> 
+    </action>
+    
+   <action name="RouteAction_checkNameIsExist"  method="checkRouteName"  class="com.action.RouteAction">
+          <result name="success">/</result> 
+    </action>
+    </package>
+
+</struts>

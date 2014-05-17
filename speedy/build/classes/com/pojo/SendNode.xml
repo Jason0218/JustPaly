@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.SendNode">
+
+
+<insert id="insertSendNode" parameterType="SendNode">
+insert into t_sendnode values(t_sendnode_sequence.nextval,
+								#{nodename},
+								#{innerprice},
+								#{user_id},
+								#{username},
+								#{password},
+								#{forwordnode},
+								#{nextnode},
+								#{nodetype},
+								#{empcount}			
+			)	
+
+</insert>
+
+<select id="select_getAll"  resultType="SendNode" >
+		select * from t_sendnode
+</select>
+
+
+<select id="selectSendNode_by_id" parameterType="int" resultType="SendNode">
+		select * from t_sendnode where "id"= #{id}
+</select>
+
+<select id="deleteSendNode" parameterType="int" >
+		delete from t_sendnode where "id"= #{id}
+</select>
+
+<select id="updateSendNode" parameterType="SendNode" >
+		update t_sendnode set nodename=#{nodename},innerprice=#{innerprice},username=#{username},forwordnode=#{forwordnode},nextnode=#{nextnode},
+							  "password"=#{password},nodetype=#{nodetype},empcount=#{empcount}
+							  where "id"=#{id}
+</select>
+<select id="selectOnebyUsername" parameterType="String" resultType="SendNode">
+	 	select * from t_sendnode where username=#{username}
+</select>
+
+<select id="selectOnebyNodename" parameterType="String" resultType="SendNode">
+	 	select * from t_sendnode where nodename=#{nodename}
+</select>
+
+
+<select id="selectbyForwordNode" parameterType="String" resultType="SendNode">
+	 	select * from t_sendnode where forwordnode=#{forwordnode}
+</select>
+
+
+<select id="selectByStartAndEnd" parameterType="map"  resultType="SendNode">
+	 
+	 	select t2.* from
+	      (select rownum r,t1.* from t_sendnode t1 
+			where rownum&lt;=${end}) t2
+	     where t2.r&gt;${start}
+</select>
+
+
+</mapper>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.OrderMapper">
+	<resultMap type="com.pojo.Order" id="order">
+
+		<id property="id" column="oid" />
+		<result property="destn" column="odestn" />
+		<result property="nodeid" column="onodeid" />
+		<result property="accepetdate" column="oaccepetdate" />
+		<result property="user_id" column="ouser_id" />
+		<result property="accepeter" column="oaccepeter" />
+		<result property="accepterphonenum" column="oaccepterphonenum" />
+		<result property="price" column="oprice" />
+		<result property="scope" column="oscope" />
+		<result property="senddate" column="osenddate" />
+		<result property="address" column="oaddress" />
+		<result property="email" column="oemail" />
+		<result property="goodsamount" column="ogoodsamount" />
+		<result property="mateprice" column="omateprice" />
+		<result property="proteprice" column="oproteprice" />
+		<result property="sendprice" column="osendprice" />
+		<result property="totalprice" column="ototalprice" />
+		<result property="sender" column="osender" />
+
+		<association property="good" javaType="com.pojo.Goods"
+			resultMap="o_goods"></association>
+
+	</resultMap>
+
+	<resultMap type="com.pojo.Goods" id="o_goods">
+		<id property="id" column="gid"></id>
+		<result property="goodsName" column="goodsName" />
+		<result property="typeId" column="typeId" />
+		<result property="volume" column="volume" />
+		<result property="weight" column="weight" />
+
+		<!-- 查询order -->
+	</resultMap>
+	<select id="selectOrder_by_id2" parameterType="int" resultMap="order">
+		select o."id" oid,
+		o.DESTN odestn,
+		o.NODE_ID onodeid,
+		o.ACCEPETDATE
+		oaccepetdate,
+		o.USER_ID ouser_id,
+		o.ACCEPETER oaccepeter,
+		o.ACCEPETERPHONENUM oaccepterphonenum,
+		o.PRICE oprice,
+		o."scope" oscope,
+		o.SENDDATE osenddate,
+		o.ADDRESS oaddress,
+		o.EMAIL oemail,
+		o.GOODS_ID gid,
+		o.GOODSAMOUNT ogoodsamount,
+		o.MATEPRICE omateprice,
+		o.PROTECTPRICE
+		oproteprice,
+		o.SENDPRICE osendprice,
+		o.TOTALPRICE ototalprice,
+		o.SENDER  osender ,
+		g.GOODSNAME goodsName,
+		g.TYPE_ID typeId,
+		g.VOLUME volume,
+		g.WEIGHT weight
+		from T_order o join T_goods g on o.goods_id=g."id"
+		where o."id" = #{id}
+	</select>
+
+	<select id="selectOrder_by_id" parameterType="int" resultType="com.pojo.Order">
+		select * from T_order where "id" = #{id}
+	</select>
+
+	<select id="selectAllType" resultType="com.pojo.GoodsType">
+		select * from T_goodsType
+	</select>
+	<select id="selectAllSendNode" resultType="com.pojo.SendNode">
+		select * from
+		T_SendNode
+	</select>
+
+	<delete id="delOrderById" parameterType="int">
+
+		delete from T_order where "id"=#{id}
+	</delete>
+	<!-- 多条件查询 -->
+	<select id="SelectOrderByFields" resultType="com.pojo.Order">
+		select * from T_order
+		<where>
+
+			<if test="sender!='' and sender!=null">
+				sender=#{sender}
+
+			</if>
+
+			<if test="senddate!=null">
+				and senddate=#{senddate,jdbcType=DATE}
+
+			</if>
+
+			<if test=" accepeter!=''">
+				and accepeter=#{accepeter}
+
+			</if>
+
+			<if test="accepetdate!=null">
+				and accepetdate = #{accepetdate,jdbcType=DATE}
+			</if>
+
+			<if test="address!=''">
+
+				and address like '%'||#{address}||'%'
+				
+
+			</if>
+		</where>
+	</select>
+	<update id="updateOrderbyId" parameterType="com.pojo.Order">
+
+		update T_Order set
+
+		ACCEPETER=#{accepeter},
+		ACCEPETERPHONENUM=#{accepterphonenum},
+		PRICE=#{price},
+		ADDRESS=#{address},
+		EMAIL=#{email},
+		SENDDATE=#{senddate,jdbcType=DATE},
+		GOODSAMOUNT=#{goodsamount},
+		MATEPRICE=#{mateprice},
+		PROTECTPRICE=#{proteprice},
+		SENDPRICE=#{sendprice},
+		TOTALPRICE=#{totalprice},
+		SENDER=#{sender}
+		where "id"=#{id}
+	
+
+	</update>
+	<update id="updategood" parameterType="com.pojo.Goods">
+	
+	  update T_goods  set
+	    goodsName=#{goodsName},
+	    type_id=#{typeId},
+	    volume=#{volume},
+	    weight=#{weight}
+	   where "id"=#{id}
+	
+	</update>
+
+	<select id="getGoodStatebyOrderId" parameterType="int"
+		resultType="com.pojo.GoodsState">
+
+		select * from T_GoodsState where order_id=#{oid}
+	</select>
+	<!-- 根据员工号得到配送点id -->
+	<select id="getNodeidbyEmp" resultType="int" parameterType="int">
+		select Node_id from T_employee where "id"=#{empid}
+	</select>
+
+	<!-- 插入货物 -->
+
+	<insert id="Insert_good" parameterType="com.pojo.Goods">
+
+		<selectKey resultType="int" keyProperty="id" order="BEFORE">
+			select
+			t_goods_sequence.nextVal from dual
+		</selectKey>
+
+		insert into T_goods
+		values(#{id},#{goodsName},#{typeId},#{volume},#{weight})
+
+	</insert>
+	<!-- 插入订单 -->
+	<insert id="Insert_order" parameterType="com.pojo.Order">
+		<selectKey resultType="int" keyProperty="id" order="BEFORE">
+			select
+			t_order_sequence.nextVal from dual
+		</selectKey>
+
+		insert into
+		T_order("id",DESTN,NODE_ID,ACCEPETDATE,USER_ID,ACCEPETER,ACCEPETERPHONENUM,PRICE,"scope",SENDDATE,ADDRESS,EMAIL,GOODS_ID,GOODSAMOUNT,MATEPRICE,PROTECTPRICE,SENDPRICE,TOTALPRICE,SENDER)
+		values(#{id},#{destn},#{nodeid},#{accepetdate},#{user_id},#{accepeter},#{accepterphonenum},#{price},#{scope},#{senddate},#{address},#{email},#{good.id},#{goodsamount},#{mateprice},#{proteprice},#{sendprice},#{totalprice},#{sender})
+	</insert>
+</mapper>

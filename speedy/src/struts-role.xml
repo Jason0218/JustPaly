@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+	<!-- Add packages here <package name="order" namespace="/order" extends="struts-default"> 
+		<action name="q" method="query" class="com.action.OrderAction"> <result name="success">/success.jsp</result> 
+		</action> </package> -->
+	<package name="default" namespace="/" extends="struts-default">
+    <action name="showRole" method="selectAll" class="roleAction">
+        <result name="success">../quanxian/roleTable.jsp</result>
+    </action>
+    
+     <action name="getRole" method="selectAll" class="roleAction">
+        <result name="success">../user/adduser.jsp</result>
+    </action>
+    
+    <action name="insertRole" method="addRole" class="roleAction">
+        <result name="success" type="redirect">quanxian/showRole</result>
+    </action>
+    
+    <action name="validateRoleName" method="validateRoleName" class="roleAction">
+        <result name="success">/</result>
+    </action>
+    
+    
+    <action name="deleteByRid" method="deleteByRid" class="roleAction">
+        <result name="success" type="redirect">quanxian/showRole</result>
+    </action>
+    
+    <action name="deleteMany" method="deleteMany" class="roleAction">
+        <result name="success" type="redirect">quanxian/showRole</result>
+    </action>
+    
+    <action name="showRoleDetails" method="showRoleDetails" class="roleAction">
+        <result name="success">../quanxian/update_role.jsp</result>
+    </action>
+    
+      <action name="updateRolePms" method="updateRolePms" class="roleAction">
+        <result name="success" type="redirect">quanxian/showRole</result>
+    </action>
+    
+    
+    
+    </package>
+
+</struts>

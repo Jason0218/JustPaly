@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+    <!-- Add packages here -->
+    <package name="sendNode" namespace="/" extends="struts-default">
+    
+    
+    
+    
+    <action name="sendNode_*" method="{1}" class="com.action.SendNodeAction">
+        <result name="success">/sendNode/getAll.jsp</result>
+        <result name="getOne">/sendNode/oneDetail.jsp</result>
+        <result name="readyUpdateSuccess">/sendNode/updateSendNode.jsp</result>
+        <result name="getAllDetailsSuccess">/sendNode/getAllDetails2.jsp</result>
+         <result name="updateSuccess" type="chain">sendNode_getAllDetails</result>
+        <result name="insertSuccess" type="chain">sendNode_getAll</result>
+        <result name="deleteSuccess" type="chain">sendNode_getAll</result>
+        
+    </action>
+  
+    
+    </package>
+
+</struts>

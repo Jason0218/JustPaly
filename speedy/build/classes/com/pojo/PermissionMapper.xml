@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.PermissionMapper">
+	<select id="selectPms_all" resultType="com.pojo.Permission">
+		select * from t_permission
+	</select>
+	
+	<select id="select_by_pname" parameterType="String" resultType="com.pojo.Permission">
+		select * from t_permission where pname=#{pname}
+	</select>
+	
+	<insert id="insert_Pms" parameterType="com.pojo.Permission"
+		statementType="PREPARED">
+		insert into t_permission (pid,pname,model,purl)
+		values
+		(t_permission_sequence.nextval,#{pname},#{model},#{purl})
+	</insert>
+
+	<delete id="delete_by_pid" parameterType="int">
+		delete from t_permission
+		where pid = #{id}
+	</delete>
+
+	<select id="select_rid_by_pid" parameterType="int" resultType="int">
+		select rid from t_rp where pid=#{pid}
+	</select>
+
+	<select id="select_by_pid" parameterType="int" resultType="com.pojo.Permission">
+		select * from t_permission where pid=#{pid}
+	</select>
+
+	<update id="updatePms" parameterType="com.pojo.Permission">
+		update t_permission set
+		model = #{model},
+		purl = #{purl}
+		where pid=#{pid}
+		</update>
+</mapper>

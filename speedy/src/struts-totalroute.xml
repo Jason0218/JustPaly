@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+    <!-- Add packages here -->
+    <package name="totalRoute" namespace="/" extends="struts-default">
+    <action name="TotalRouteAction_query"  method="queryTotalRoutes"  class="com.action.TotalRouteAction">
+          <result name="success">/route/showTotalRoute.jsp</result> 
+    </action>
+    
+    <action name="TotalRouteAction_queryById"  method="queryTotalRoutesById"  class="com.action.TotalRouteAction">
+          <result name="success">/route/showTotalRoute.jsp</result> 
+    </action>
+    
+    <action name="TotalRouteAction_queryByNum"  method="queryTotalRoutesByNum"  class="com.action.TotalRouteAction">
+          <result name="success">/route/showTotalRoute.jsp</result> 
+    </action>
+    
+    <action name="TotalRouteAction_queryByName"  method="queryTotalRoutesByName"  class="com.action.TotalRouteAction">
+          <result name="success">/route/showTotalRoute.jsp</result> 
+    </action>
+    
+     <action name="TotalRouteAction_insert"  method="insertTotalRoutes"  class="com.action.TotalRouteAction">
+          <result name="success">/route/showTotalRoute.jsp</result> 
+    </action>
+    
+     <action name="TotalRouteAction_delete"  method="deleteTotalRoutes"  class="com.action.TotalRouteAction">
+          <result name="success">/route/showTotalRoute.jsp</result> 
+    </action>
+    
+    <action name="TotalRouteAction_update"  method="updateTotalRoutes"  class="com.action.TotalRouteAction">
+          <result name="success">/route/showTotalRoute.jsp</result> 
+    </action>
+    </package>
+</struts>

@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.ReportMapper">
+
+
+   <!-- 	 column为数据库中的字段名,property为实体类中的属性 --> 
+	<resultMap id="CompanyreportformMap" type="Report"> 
+		<id column="id" property="id"/>  
+		<result column="formdate" property="formdate" />  
+		<result column="formbirthdate" property="formbirthdate" />
+		
+		<result column="totalweight" property="totalweight" /> 
+		<result column="totalvolume" property="totalvolume" />  
+		<result column="totalincome" property="totalincome" />  
+
+		<association column="nodename" property="sendnode" javaType="SendNode"
+			resultMap="SendnodeResult"/> 
+			
+	</resultMap> 
+	<resultMap id="SendFormMap" type="SendForm">
+	<id column="id" property="id"/>
+	<result column="formdate" property="formdate" />  
+		<result column="formbirthdate" property="formbirthdate" />
+		
+		<result column="totalweight" property="totalweight" /> 
+		<result column="totalvolume" property="totalvolume" />  
+		<result column="totalincome" property="totalincome" />  
+
+		<association column="nodename" property="sendnode" javaType="SendNode"
+			resultMap="SendnodeResult"/> 
+	</resultMap>
+    
+    <resultMap id="AcceptFormMap" type="AcceptForm">
+    <id column="id" property="id"/>
+	<result column="formdate" property="formdate" />  
+		<result column="formbirthdate" property="formbirthdate" />
+		
+		<result column="totalweight" property="totalweight" /> 
+		<result column="totalvolume" property="totalvolume" />  
+		<result column="totalincome" property="totalincome" />  
+
+		<association column="nodename" property="sendnode" javaType="SendNode"
+			resultMap="SendnodeResult"/> 
+    
+    </resultMap>
+    <!-- 与sendnode进行连接查询sendnode返回的类型集合 -->
+    
+	<resultMap id="SendnodeResult" type="SendNode">
+		<id column="id"  property="id" />
+		<result column="nodename" property="nodename" />  
+		<result column="innerprice" property="innerprice" />
+		<result column="user_id"  property="user_id" />   
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="forwordnode" property="forwordnode" />
+		<result column="nextnode"  property="nextnode" />
+		<result column="nodetype"  property="nodetype" />
+		<result column="empcount"  property="empcount" />
+	</resultMap>
+	
+	<!-- 连接查询SendForm 和Sendnode -->
+	<select id="SendnodeformQueryAll" parameterType="Map" resultMap="SendFormMap">
+	select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.tatalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		      FROM T_SENDFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+	<select id="selectSendReport_ByYear" parameterType="Map" resultMap="SendFormMap">
+	select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.tatalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		      FROM T_SENDFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		       where to_char(C.formdate,'yyyy')=#{p0}
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+	<select id="selectSendReport_BySeason" parameterType="Map" resultMap="SendFormMap">
+	select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.tatalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		      FROM T_SENDFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		        where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+	
+	<select id="selectSendReport_ByMonth" parameterType="Map" resultMap="SendFormMap">
+	select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.tatalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		      FROM T_SENDFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		        where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			   and to_char(C.formdate,'MM')=#{p2}  
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+	<select id="selectSendReport_ById"  resultMap="SendFormMap" >
+       select  C."id"          as id,
+		       C.formdate   as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.tatalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		        FROM T_SENDFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		        where C."id"=#{id}
+
+</select>
+	<!-- 连接查询AcceptForm 和 Sendnode -->
+	<select id="AcceptformQueryAll" parameterType="Map" resultMap="AcceptFormMap">
+	select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		      FROM T_ACCEPTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		      
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+	<select id="selectAcceptReport_ByYear" parameterType="Map" resultMap="AcceptFormMap">
+	select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		      FROM T_ACCEPTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		       where to_char(C.formdate,'yyyy')=#{p0}
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+	<select id="selectAcceptReport_BySeason" parameterType="Map" resultMap="AcceptFormMap">
+	select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		      FROM T_ACCEPTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		        where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+	
+	<select id="selectAcceptReport_ByMonth" parameterType="Map" resultMap="AcceptFormMap">
+	select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		      FROM T_ACCEPTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		        where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			   and to_char(C.formdate,'MM')=#{p2}  
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+	<select id="selectAcceptReport_ById"  resultMap="AcceptFormMap" >
+       select  C."id"          as id,
+		       C.formdate   as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		        FROM T_ACCEPTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		        where C."id"=#{id}
+
+</select>
+	
+ 	<!--连接查询Company 和 Sendnode-->
+	
+ 	<select id="CompanyreportformQueryAll"  parameterType="Map" resultMap="CompanyreportformMap">
+		select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweighet as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.totalincome as totalincome
+		      FROM T_COMPANYREPORTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+ 	
+ 	<select id="selectReport_ById"  resultMap="CompanyreportformMap" >
+       select  C."id"          as id,
+		       C.formdate   as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweighet as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.totalincome as totalincome
+		        FROM T_COMPANYREPORTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+		        where C."id"=#{id}
+
+</select>
+
+
+
+  <select id="selectReport_ByYear" parameterType="Map" resultMap="CompanyreportformMap">
+      select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweighet as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.totalincome as totalincome
+		      FROM T_COMPANYREPORTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			  
+			  
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+  
+  </select>
+  
+  <select id="selectReport_BySeason" parameterType="Map" resultMap="CompanyreportformMap">
+  select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweighet as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.totalincome as totalincome
+		      FROM T_COMPANYREPORTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+  
+  </select>
+ 	
+	<!--print按年查询全部company报表数据(不分页)-->
+	<select id="queryForAllByYear" parameterType="Map" resultMap="CompanyreportformMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweighet as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.totalincome as totalincome
+		       FROM T_COMPANYREPORTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			  
+			    			
+	</select>
+	
+	<select id="queryForAllBySeason" parameterType="Map" resultMap="CompanyreportformMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweighet as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.totalincome as totalincome
+		       FROM T_COMPANYREPORTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			   
+			    			
+	</select>
+	
+	<select id="queryForAllByMonth" parameterType="Map" resultMap="CompanyreportformMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweighet as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.totalincome as totalincome
+		       FROM T_COMPANYREPORTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			   and to_char(C.formdate,'MM')=#{p2}  
+			    			
+	</select>
+	
+	<select id="queryForAllByNone" parameterType="Map" resultMap="CompanyreportformMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweighet as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.totalincome as totalincome
+		       FROM T_COMPANYREPORTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   
+			    			
+	</select>
+	<!--查询sendform （不分页）-->
+	<select id="SendByNone" parameterType="Map" resultMap="SendFormMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.tatalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		       FROM T_SENDFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   
+			    			
+	</select>
+	<select id="AcceptByNone" parameterType="Map" resultMap="AcceptFormMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		       FROM T_ACCEPTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   
+			    			
+	</select>
+	<select id="SendByYear" parameterType="Map" resultMap="SendFormMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.tatalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		       FROM T_SENDFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			   
+			    			
+	</select>
+	<select id="AcceptByYear" parameterType="Map" resultMap="AcceptFormMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		       FROM T_ACCEPTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			  
+			    			
+	</select>
+	<select id="SendBySeason" parameterType="Map" resultMap="SendFormMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.tatalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		       FROM T_SENDFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			    
+			    			
+	</select>
+	<select id="AcceptBySeason" parameterType="Map" resultMap="AcceptFormMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		       FROM T_ACCEPTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			    
+			    			
+	</select>
+	<select id="SendByMonth" parameterType="Map" resultMap="SendFormMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.tatalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		       FROM T_SENDFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			   and to_char(C.formdate,'MM')=#{p2}  
+			    			
+	</select>
+	<select id="AcceptByMonth" parameterType="Map" resultMap="AcceptFormMap">
+           select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweight as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.income as totalincome
+		       FROM T_ACCEPTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			   and to_char(C.formdate,'MM')=#{p2}  
+			    			
+	</select>
+	<!--按年查询全部company报表数据（分页）-->
+	<select id="queryForPageByYear" parameterType="Map" resultMap="CompanyreportformMap">
+		select * from (select A.*, rownum as rowq
+			from 
+			(select 
+			   C."id"          as id,
+		       C.formdate    as formdate,
+		       C.formbirthdate  as formbirthdate,
+		       T.nodename     as nodename,
+		       C.totalweighet as totalweight,
+		       C.totalvolume as totalvolume,
+		       C.totalincome as totalincome
+		      FROM T_COMPANYREPORTFORM C JOIN T_SENDNODE T ON C.NODE_ID=T."id"
+			   where to_char(C.formdate,'yyyy')=#{p0}
+			   and to_char(C.formdate,'q')=#{p1} 
+			   and to_char(C.formdate,'MM')=#{p2}  
+			    order by C."id" asc)A 
+			where rownum &lt;=#{end}) B
+		where rowq >= #{start}
+	</select>
+    <select id="queryForPageByYear_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_companyreportform C
+		     where to_char(C.formdate,'yyyy')=#{p0} 
+		       and to_char(C.formdate,'q')=#{p1}
+		       and to_char(C.formdate,'MM')=#{p2}   
+	</select>
+	<select id="CompanyreportformQueryAll_count" parameterType="Map" resultType="Integer">
+	select count(*) from t_companyreportform 
+	</select>
+	
+	<select id="selectReport_ByYear_count" parameterType="Map" resultType="Integer">
+	select count(*) from t_companyreportform C
+		     where to_char(C.formdate,'yyyy')=#{p0} 
+	</select>
+	
+	<select id="selectReport_BySeason_count" parameterType="Map" resultType="Integer">
+	select count(*) from t_companyreportform C
+		     where to_char(C.formdate,'yyyy')=#{p0} 
+		       and to_char(C.formdate,'q')=#{p1}
+	</select>
+      <select id="selectSendReport_ByMonth_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_sendform C
+		     where to_char(C.formdate,'yyyy')=#{p0} 
+		       and to_char(C.formdate,'q')=#{p1}
+		       and to_char(C.formdate,'MM')=#{p2}   
+	</select>
+	  <select id="selectSendReport_BySeason_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_sendform C
+		     where to_char(C.formdate,'yyyy')=#{p0} 
+		       and to_char(C.formdate,'q')=#{p1}
+		        
+	</select>
+	  <select id="selectSendReport_ByYear_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_sendform C
+		     where to_char(C.formdate,'yyyy')=#{p0} 
+		    
+	</select>
+	  <select id="SendnodeformQueryAll_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_sendform C
+		      
+	</select>
+	<select id="SendByNone_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_sendform C
+		      
+	</select>
+	<select id="selectAcceptReport_ByMonth_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_acceptform C
+		     where to_char(C.formdate,'yyyy')=#{p0} 
+		       and to_char(C.formdate,'q')=#{p1}
+		       and to_char(C.formdate,'MM')=#{p2}   
+	</select>
+	  <select id="selectAcceptReport_BySeason_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_acceptform C
+		     where to_char(C.formdate,'yyyy')=#{p0} 
+		       and to_char(C.formdate,'q')=#{p1}
+		        
+	</select>
+	  <select id="selectAcceptReport_ByYear_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_acceptform C
+		     where to_char(C.formdate,'yyyy')=#{p0} 
+		    
+	</select>
+	  <select id="AcceptformQueryAll_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_acceptform C
+		      
+	</select>
+	<select id="AcceptByNone_count" parameterType="Map" resultType="Integer">
+		select count(*) from t_acceptform C
+		      
+	</select>
+	
+</mapper>

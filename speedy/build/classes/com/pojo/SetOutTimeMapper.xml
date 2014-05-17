@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.SetOutTimeMapper">
+	<insert id="insertTime" parameterType="com.pojo.SetOutTime">
+		insert into t_setouttime("id",car_id,setouttime)
+			values (t_setouttime_sequence.nextval,#{carid},#{setouttime})
+	</insert>
+
+	<select id="selectByCarId1" parameterType="int" resultType="com.pojo.SetOutTime">
+		select * from t_setouttime where car_id = #{id}
+	</select>
+</mapper>

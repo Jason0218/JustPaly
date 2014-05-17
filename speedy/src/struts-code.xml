@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+	<!-- Add packages here <package name="order" namespace="/order" extends="struts-default"> 
+		<action name="q" method="query" class="com.action.OrderAction"> <result name="success">/success.jsp</result> 
+		</action> </package> -->
+	<package name="admin" namespace="/" extends="struts-default">
+		<action name="codeAction" class="com.action.CodeAction">
+			<result name="success">/</result>
+		</action>
+    
+     
+    
+    
+    
+	</package>
+
+</struts>

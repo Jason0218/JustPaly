@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+	<!-- Add packages here <package name="order" namespace="/order" extends="struts-default"> 
+		<action name="q" method="query" class="com.action.OrderAction"> <result name="success">/success.jsp</result> 
+		</action> </package> -->
+	<package name="jsonManager" extends="json-default" namespace="/order">
+		<!-- 返回结果类型为 json -->
+		<action name="queryorder" class="com.action.OrderAction"
+			method="query">
+			<result type="json" name="success">
+				<param name="root">al</param>
+			</result>
+		</action>
+
+  <!--得到货物类别 -->
+		<action name="getGoodType" class="com.action.OrderAction"
+			method="queryAlltype">
+			<result type="json" name="success">
+				<param name="root">typeList</param>
+			</result>
+		</action>
+		
+	
+	<!--根据多条件从order查询其信息和状态 -->
+			<action name="checkOrderbyFields" class="com.action.OrderAction"
+			method="getOrderList">
+			<result type="json" name="success">
+				<param name="root">ordersAndState</param>
+			</result>
+		</action>
+		
+		<!-- 得到所有的站点-->
+			<action name="getSendNode" class="com.action.OrderAction"
+			method="getSendNode">
+			<result type="json" name="success">
+				<param name="root">nodeList</param>
+			</result>
+		</action>
+		
+
+	</package>
+
+	<package name="orderManager" extends="struts-default"
+		namespace="/order">
+		
+		<action name="*" class="com.action.OrderAction" method="{1}">
+			<result name="success">
+                submitOrder.jsp
+			</result>
+			<result name="IntoupdateJsp">
+                 delOrUpdateOrder.jsp
+			</result>
+			<result name="delorUpdatesuccess">
+                 listOrder.jsp
+			</result>
+		</action>
+
+
+	</package>
+
+</struts>

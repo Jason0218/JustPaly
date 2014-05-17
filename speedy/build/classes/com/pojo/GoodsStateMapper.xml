@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.GoodsStateMapper">
+	<insert id="insertState" parameterType="com.pojo.GoodsState">
+		insert into t_goodsstate("id",bagnum,order_id,nowposition,nextposition)
+			values (t_goodsstate_sequence.nextval,#{bagnum},#{orderId},#{nowposition},#{nextposition})
+	</insert>
+	<update id="updateGs" parameterType="com.pojo.GoodsState">
+		update t_goodsstate set
+		nowposition = #{nowposition},
+		nextposition = #{nextposition},
+		arrivetime=#{arriveTime}
+		where "id"=#{id}
+	</update>
+	
+	<select id="select_by_oid" parameterType="int" resultType="com.pojo.GoodsState">
+		select * from t_goodsstate where order_id= #{id}
+</select>
+	
+</mapper>

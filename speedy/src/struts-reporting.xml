@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+	<struts>
+	
+    <package name="report" extends="struts-default" namespace="/report">
+		<action name="company" class="com.action.ReportingAction" method="tocompany" >
+			<result name="tocompany">/report/company.jsp</result>
+		</action>
+		<action name="companyformshow" class="reportingAction" method="skipToCompanyFormdetail" >
+			<result name="tocompanydetail">/report/companyformshow.jsp</result>
+		</action>
+		<action name="print" class="reportingAction" method="printXls" >
+			<result name="tocompanydetail">/report/companyformshow.jsp</result>
+		</action>
+		<action name="print2" class="reportingAction" method="printXls2" >
+			<result name="tosendformdetail">/report/sendform.jsp</result>
+		</action>
+		<action name="print3" class="reportingAction" method="printXls3" >
+			<result name="toacceptformdetail">/report/acceptform.jsp</result>
+		</action>
+		<action name="getReportById" class="reportingAction" method="queryReportById">
+		   <result name="tocompanyOne">/report/companyformOne.jsp</result>
+		
+		</action>
+		<action name="sendnodeformshow" class="reportingAction" method="skipToSendnodeFormdetail">
+		<result name="tosendnodedetail">/report/sendnodeformshow.jsp</result>
+		<result name="tosendformdetail">/report/sendform.jsp</result>
+		<result name="toacceptformdetail">/report/acceptform.jsp</result>
+		</action>
+		<action name="SendformById" class="reportingAction" method="SendformById">
+		<result name="tosendformOne">/report/sendformOne.jsp</result>
+		</action>
+		
+		<action name="SendformById1" class="reportingAction" method="validateid1">
+		<result name="validateSuccess"></result>
+		</action>
+		<action name="AcceptformById1" class="reportingAction" method="validateid2">
+		<result name="validateSuccess"></result>
+		</action>
+		<action name="CompanyformById" class="reportingAction" method="validateid3">
+		<result name="validateSuccess"></result>
+		</action>
+		<action name="AcceptformById" class="reportingAction" method="AcceptformById">
+		<result name="toacceptformOne">/report/acceptformOne.jsp</result>
+		</action>
+		
+		
+	</package>
+	</struts>

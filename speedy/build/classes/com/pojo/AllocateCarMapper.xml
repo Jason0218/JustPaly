@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.AllocateCarMapper">
+	<insert id="insertAllo" parameterType="com.pojo.AllocateCar">
+		insert into t_allocatecar("id",orderid,car_id,nowposition,destn)
+			values (t_allocatecar_sequence.nextval,#{orderid},#{carid},#{nowposition},#{destn})
+	</insert>
+	
+	<select id="selectByCar" parameterType="int" resultType="com.pojo.AllocateCar">
+		select * from t_allocatecar where car_id=#{id}
+	</select>
+</mapper>

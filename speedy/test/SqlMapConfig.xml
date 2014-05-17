@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+
+
+
+		<typeAlias alias="SendNode" type="com.pojo.SendNode" />
+
+
+		<typeAlias alias="User" type="com.pojo.User" />
+
+
+	    <typeAlias alias="Route" type="com.pojo.Route" />
+
+
+         <typeAlias alias="TotalRoute" type="com.pojo.TotalRoute" />
+		
+
+		<typeAlias alias="AllocateBean" type="com.pojo.AllocateBean" />
+
+
+		<typeAlias alias="Order" type="com.pojo.Order" />
+
+		<typeAlias alias="Car" type="com.pojo.Car" />
+		
+		<typeAlias alias="Report" type="com.pojo.Companyreportform"/>
+
+	</typeAliases>
+	<mappers>
+
+
+	<mapper resource="com/pojo/SendNode.xml" />
+	
+
+		<mapper resource="com/pojo/UserMapper.xml" />
+
+
+		<mapper resource="com/pojo/RouteMapper.xml" />
+        
+        <mapper resource="com/pojo/TotalRouteMapper.xml"/>
+        
+		<mapper resource="com/pojo/OrderMapper.xml" />
+
+		<mapper resource="com/pojo/SetOutTimeMapper.xml" />
+
+		<mapper resource="com/pojo/RoleMapper.xml" />
+		
+		<mapper resource="com/pojo/CarMapper.xml" />
+		
+
+		<mapper resource="com/pojo/GoodsStateMapper.xml" />
+		
+		<mapper resource="com/pojo/AllocateBeanMapper.xml" />
+		
+		<mapper resource="com/pojo/AllocateCarMapper.xml" />
+		
+		<mapper resource="com/pojo/ReportMapper.xml"/>
+
+<mapper resource="com/pojo/AssociateListMapper.xml" />
+		<mapper resource="com/pojo/PermissionMapper.xml" />
+	</mappers>
+</configuration>

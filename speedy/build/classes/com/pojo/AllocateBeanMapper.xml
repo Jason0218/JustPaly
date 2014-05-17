@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.AllocateBeanMapper">
+
+	<resultMap id="allocateResult" type="AllocateBean">
+		<result property="bagnum" column="goods_state_bagnum" />
+		<result property="nodename" column="sendnode_nodename" />
+		<result property="destn" column="order_destn" />
+		<result property="volume" column="goods_volume" />
+		<result property="weight" column="goods_weight" />
+	</resultMap>
+
+
+
+	<select id="selectAll" parameterType="com.pojo.AllocateBean" resultMap="allocateResult">
+		<!-- select 
+			t1.bagnum as goods_state_bagnum,
+			t1.nodename as sendnode_nodename,
+			t1.destn as order_destn,
+			t1.goodsamount*t2.volume as goods_volume,
+			t1.goodsamount*t2.weight as goods_weight
+		from
+				(select 
+					gs.bagnum as bagnum,
+					sn.nodename as nodename,
+					o.destn as destn,
+					o.goods_id as goodsid,
+					o.goodsamount as goodsamount
+				from
+					t_goodsstate gs 
+						join 
+					t_order o on gs.order_id=o."id" 
+						join 
+					t_sendnode sn on o.node_id=sn."id") t1
+							join 
+						t_goods t2 on t1.goodsid=t2."id"
+							<if test="nodename!=null and nodename!=''">
+								where t1.nodename=#{nodename}
+							</if> -->
+							
+		
+		
+		select 
+			o."id" as goods_state_bagnum,
+			sn.nodename as sendnode_nodename,
+			o.destn as order_destn,
+			o.goodsamount*g.volume as goods_volume,
+			o.goodsamount*g.weight as goods_weight
+		from 
+			t_sendnode sn join t_order o on o.node_id=sn."id"
+				join t_goods g on g."id"=o.goods_id
+			where 
+				o."id" not in (select gs.order_id from t_goodsstate gs)
+				<if test="nodename!=null and nodename!=''">
+								and sn.nodename=#{nodename}
+				</if>
+	</select>
+</mapper>

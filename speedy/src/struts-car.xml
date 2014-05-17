@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"struts-2.3.dtd">
+
+<struts>
+
+    <!-- Add packages here -->
+    <package name="car" namespace="/car" extends="struts-default">
+    <action name="insertCar" class="carAction" method="insertCar">
+        <result type="redirectAction">car/showCar</result>
+    </action>
+    
+    <action name="showCar" class="carAction" method="showCar">
+    	<result name="suc">/car/showcar.jsp</result>
+    </action>
+    
+    <action name="validateCarId" class="carAction" method="validateCarId">
+        <result name="suc">/</result>
+    </action>
+    
+    <action name="selectCarByCond" class="carAction" method="showCar">
+    	<result name="suc">/car/showcar.jsp</result>
+    </action>
+    
+    <action name="selectById" class="carAction" method="selectById">
+    	<result name="suc">/car/updateCar.jsp</result>
+    </action>
+    
+    <action name="updateCar" class="carAction" method="updateCar">
+    	<result name="suc" type="redirectAction">car/showCar</result>
+    </action>
+    
+    <action name="deleteById" class="carAction" method="deleteCar">
+    	<result name="suc" type="redirectAction">car/showCar?curpage=${curpage}</result>
+    </action>
+    
+    <action name="deleteByIds" class="carAction" method="deleteCarByIds">
+    	<result name="suc" type="redirectAction">car/showCar?curpage=${curpage}</result>
+    	<result name="fail" type="redirectAction">car/showCar?msg=${msg}</result>
+    </action>
+    
+    <action name="selectMore" class="carAction" method="selectMore">
+    	<result name="suc">/car/showMore.jsp</result>
+    </action>
+    </package>
+
+</struts>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.RouteMapper">
+<select id="selectAllRoute" resultType="Route">
+select * from t_route order by  "id" asc
+</select>
+<select id="selectRouteByName" parameterType="String"  resultType="Route">
+select * from t_route where routename = #{routename}	
+</select>
+<insert id="insertRoute" parameterType="Route" >
+insert into t_route values(t_route_sequence.nextval, #{routename},#{routefrom},#{routeto}) 
+</insert>
+<delete id="deleteRoutes" parameterType ="int">
+ delete from t_route where "id" = #{id}
+</delete>
+<update id="updateRoute" parameterType="Route">
+update t_route set routename = #{routename}, routefrom= #{routefrom} , routeto=#{routeto}
+where "id" = #{id}
+</update>
+<select id="selectRouteByCondition" parameterType="Map" resultType="Route">
+		select t2.* from
+	      (select rownum r,t1.* from t_route t1 
+			where rownum&lt;=${end}) t2
+	     where t2.r&gt;${start}
+</select>
+
+</mapper>

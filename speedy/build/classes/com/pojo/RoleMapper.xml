@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.RoleMapper">
+	<select id="selectRole_all" resultType="com.pojo.Role">
+		select * from t_role
+	</select>
+
+	<insert id="insert_Role" parameterType="com.pojo.Role"
+		statementType="PREPARED">
+		insert into t_role (rid,rname)
+		values
+		(t_role_sequence.nextval,#{rname})
+	</insert>
+
+	<select id="select_by_rname" parameterType="String" resultType="com.pojo.Role">
+		select * from t_role where rname = #{rname}
+	</select>
+
+	<insert id="insert_Role_Pms" parameterType="map" statementType="PREPARED">
+		insert into t_rp (rid,pid)
+		values (#{rid},#{pid})
+	</insert>
+
+	<delete id="delete_by_rid" parameterType="int">
+		delete from t_role
+		where rid = #{id}
+	</delete>
+
+	<select id="show_Role_Pms" parameterType="int" resultType="com.pojo.Permission">
+		select p.* from t_permission p join t_rp rp on p.pid=rp.pid
+		where
+		rp.rid=#{id}
+	</select>
+
+	<select id="show_Role_else_Pms" parameterType="int"
+		resultType="com.pojo.Permission">
+		select * from t_permission where pid not in (select p.pid
+		from
+		t_permission p join t_rp rp on p.pid=rp.pid where rp.rid=#{id})
+	</select>
+
+	<select id="select_by_rid" parameterType="int" resultType="com.pojo.Role">
+		select * from t_role where rid = #{rid}
+	</select>
+
+	<delete id="delete_role_pms" parameterType="int">
+		delete from t_rp
+		where rid = #{id}
+	</delete>
+	
+	
+
+</mapper>

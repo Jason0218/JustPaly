@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+  		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+ 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	
+
+	<!-- mybatis配置 -->
+	<bean id="carAction" class="com.action.CarAction" scope="prototype">
+	     <property name="carService" ref="carService"></property>
+	     <property name="allocateService" ref="allocateService"></property>
+	     <property name="timeService" ref="timeService"></property>
+	     <property name="goodsService" ref="goodsStateService"></property>
+	</bean>
+	<bean id="allocateService" class="com.service.impl.AllocateCarServiceImpl">
+	     <property name="allocateCarDao" ref="allocateCarDao"></property>
+	</bean>
+	
+	
+	<bean id="carService" class="com.service.impl.CarServiceImpl">
+	     <property name="carDao" ref="carDao"></property>
+	</bean>
+	<bean id="carDao" class="com.dao.impl.CarDaoImpl">
+	     <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+ </beans>
